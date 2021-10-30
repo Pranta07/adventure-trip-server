@@ -43,10 +43,33 @@ async function run() {
             res.send(result);
         });
 
+        //finding a user orders
+        app.get("/myPlans/:email", async (req, res) => {
+            const email = req.params.email;
+            // console.log(email);
+            const query = { email: email };
+            const result = await ordersCollection.find(query).toArray();
+            res.json(result);
+        });
+
+        //get all orders
+        app.get("/managePlans", async (req, res) => {
+            const result = await ordersCollection.find({}).toArray();
+            res.json(result);
+        });
+
         //POST API for recieving orders
         app.post("/takeOrders", async (req, res) => {
             const order = req.body;
             const result = await ordersCollection.insertOne(order);
+            res.json(result);
+        });
+
+        //delete tour plan
+        app.delete("/remove/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query);
             res.json(result);
         });
     } finally {

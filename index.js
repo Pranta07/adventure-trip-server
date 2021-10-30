@@ -26,6 +26,7 @@ async function run() {
         // console.log("mongodb connected successfully!");
         const database = client.db("AdventureTrip");
         const toursCollection = database.collection("services");
+        const ordersCollection = database.collection("orders");
 
         //getting all services
         app.get("/services", async (req, res) => {
@@ -40,6 +41,13 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await toursCollection.findOne(query);
             res.send(result);
+        });
+
+        //POST API for recieving orders
+        app.post("/takeOrders", async (req, res) => {
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
+            res.json(result);
         });
     } finally {
         // client.close();

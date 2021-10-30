@@ -65,6 +65,14 @@ async function run() {
             res.json(result);
         });
 
+        //post api for adding new item
+        app.post("/addNewPlans", async (req, res) => {
+            const doc = req.body;
+            // console.log(doc);
+            const result = await toursCollection.insertOne(doc);
+            res.json(result);
+        });
+
         //delete tour plan
         app.delete("/remove/:id", async (req, res) => {
             const id = req.params.id;
